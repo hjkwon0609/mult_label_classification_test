@@ -17,11 +17,17 @@ def preprocess_data(filename):
         train_labels = np.array([l for i, l in enumerate(labels) if i not in dev_ix])
         dev_labels = np.array([l for i, l in enumerate(labels) if i in dev_ix])
 
+        print("Done creating labels")
+
         train_features = np.array([l for i, l in enumerate(features) if i not in dev_ix])
         dev_features = np.array([l for i, l in enumerate(features) if i in dev_ix])
 
+        print("Done creating features")
+
         train_seq_len = np.array([len(sample) for sample in train_features])
         dev_seq_len = np.array([len(sample) for sample in dev_features])
+
+        print("Done creating seq_len")
 
         np.save(OUTPUT_DIR + 'train_labels', train_labels)
         np.save(OUTPUT_DIR + 'train_features', train_features)
