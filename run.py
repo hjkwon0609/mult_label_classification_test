@@ -4,7 +4,7 @@ import math
 import random
 import os
 import numpy as np
-from six.moves import xrange as range
+from util import *
 
 # from utils import *
 import pdb
@@ -12,56 +12,21 @@ from time import gmtime, strftime
 
 from config import Config
 
-def split_train_dev(filename):
-    with open(filename, 'r') as f:
-        _, labels, features = zip(*(line.strip().split('\t') for line in f))
-        
-        num_data = len(labels)
-        print('Num data read: %d' % (num_data))
-
-        features = [[f.split('/') for f in sample.split()] for sample in features]
-
-        dev_ix = set(random.sample(xrange(num_data), num_data / 5))
-
-        train_labels = [l for i, l in enumerate(labels) if i not in dev_ix]
-        dev_labels = [l for i, l in enumerate(labels) if i in dev_ix]
-
-        train_features = [l for i, l in enumerate(features) if i not in dev_ix]
-        dev_features = [l for i, l in enumerate(features) if i in dev_ix]
-
-        train_seq_len = [len(sample) for sample in train_features]
-        dev_seq_len = [len(sample) for sample in dev_features]
-
-
-        print(train_features[:10])
-
-        return train_labels, train_features, dev_labels, dev_features
-
-
 
 if __name__ == "__main__":
 
     logs_path = "tensorboard/" + strftime("%Y_%m_%d_%H_%M_%S", gmtime())
 
-    train_data = 'data/AClassification.train.txt'
-    train_labels, train_features, dev_labels, dev_features = split_train_dev(train_data)
+    INPUT_DIR = 'data/preprocessed/'
+    
+    train_labels = np.load(INPUT_DIR + 'train_label_batch.npy')
+    train_features = np.load(INPUT_DIR + 'train_features_batch.npy')
 
+    dev_labels = np.load(INPUT_DIR + 'dev_label_batch.npy')
+    dev_features = np.load(INPUT_DIR + 'dev_features_batch.npy')
 
-
-
-    # train_feature_minibatches, train_labels_minibatches, train_seqlens_minibatches = make_batches(train_dataset,
-    #                                                                                               batch_size=Config.batch_size)
-    # val_feature_minibatches, val_labels_minibatches, val_seqlens_minibatches = make_batches(train_dataset,
-    #                                                                                         batch_size=len(
-    #                                                                                             val_dataset[0]))
-
-    # def pad_all_batches(batch_feature_array):
-    #     for batch_num in range(len(batch_feature_array)):
-    #         batch_feature_array[batch_num] = pad_sequences(batch_feature_array[batch_num])[0]
-    #     return batch_feature_array
-
-    # train_feature_minibatches = pad_all_batches(train_feature_minibatches)
-    # val_feature_minibatches = pad_all_batches(val_feature_minibatches)
+    num_data = np.sum(len(batch) for batch in train_labels)
+    print(num_data)
 
     # num_examples = np.sum([batch.shape[0] for batch in train_feature_minibatches])
     # num_batches_per_epoch = int(math.ceil(num_examples / Config.batch_size))
