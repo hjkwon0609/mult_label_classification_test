@@ -18,7 +18,7 @@ def preprocess_data(filename):
         # preprocess for smaller data to get model working (BEGIN)
         ###############################################################################
         if MAKE_SMALLER:
-            dev_ix = set(random.sample(xrange(num_data), num_data / 1000))
+            dev_ix = set(random.sample(xrange(num_data), num_data / 10))
             raw_labels = [l for i, l in enumerate(raw_labels) if i in dev_ix]
             raw_features = [f for i, f in enumerate(raw_features) if i in dev_ix]
             num_data = len(raw_labels)

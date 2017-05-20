@@ -28,12 +28,12 @@ class ThresholdTrainModel():
 
 
 	def clear_data(self):
-		print('clear_data')
+		# print('clear_data')
 		self.logits = self.targets = None
 
 
 	def determine_threshold(self):
-		print('determine_threshold')
+		# print('determine_threshold')
 		if self.logits is None:
 			raise 'No logits provided'
 		
